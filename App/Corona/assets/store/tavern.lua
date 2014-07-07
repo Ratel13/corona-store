@@ -33,6 +33,7 @@ local AppId = "com.soom.la.TheTavern"
 local TheTavern = {}
 TheTavern.version = 1
 TheTavern.CUSTOM_SECRET = "The_Darkness_is_comming"
+TheTavern.GOOGLE_PLAY_KEY = "Testing"
 
 -- Currencies
 

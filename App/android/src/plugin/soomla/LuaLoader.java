@@ -21,6 +21,7 @@ import com.ansca.corona.CoronaLua;
 import com.ansca.corona.CoronaRuntime;
 import com.ansca.corona.CoronaRuntimeListener;
 
+import com.soomla.store.billing.google.*;
 import com.soomla.corona.Map_Lua;
 import com.soomla.corona.ArrayList_Lua;
 import com.soomla.corona.store.domain.LuaJSON;
@@ -311,7 +312,6 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
                 CoronaSoomlaStore.getInstance().initialize(map);
             } catch (Exception e) {
                 System.out.println("SOOMLA: It was not possible to initialize the store.");
-                System.out.println(e.getMessage());
             }
             return 0;
         }

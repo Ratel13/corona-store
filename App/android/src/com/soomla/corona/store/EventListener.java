@@ -38,9 +38,9 @@ public class EventListener {
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
-    @Subscribe public void onMarketItemsRefreshFinishedEvent(List<MarketItem> marketItems) {
+    @Subscribe public void onMarketItemsRefreshFinishedEvent(MarketItemsRefreshFinishedEvent marketEvent) {
         ArrayList<Map<String,Object>> items = new ArrayList<Map<String,Object>>();
-        for(MarketItem marketItem : marketItems) items.add(LuaJSON.marketItemMap(marketItem));
+        for(MarketItem marketItem : marketEvent.getMarketItems()) items.add(LuaJSON.marketItemMap(marketItem));
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_MarketItemsRefreshed");
         map.put("items",items);
@@ -56,7 +56,7 @@ public class EventListener {
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
-    @Subscribe public void onVirtualItemPurchased(ItemPurchasedEvent itemPurchasedEvent) {
+    @Subscribe public void onItemPurchased(ItemPurchasedEvent itemPurchasedEvent) {
         PurchasableVirtualItem purchasableVirtualItem = itemPurchasedEvent.getPurchasableVirtualItem();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_ItemPurchased");
@@ -64,7 +64,7 @@ public class EventListener {
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
-    @Subscribe public void onVirtualGoodEquipped(GoodEquippedEvent virtualGoodEquippedEvent) {
+    @Subscribe public void onGoodEquipped(GoodEquippedEvent virtualGoodEquippedEvent) {
         EquippableVG equippableVG = virtualGoodEquippedEvent.getGood();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_VirtualGoodEquipped");
@@ -72,7 +72,7 @@ public class EventListener {
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
-    @Subscribe public void onVirtualGoodUnequipped(GoodUnEquippedEvent virtualGoodUnEquippedEvent) {
+    @Subscribe public void onGoodUnEquipped(GoodUnEquippedEvent virtualGoodUnEquippedEvent) {
         EquippableVG equippableVG = virtualGoodUnEquippedEvent.getGood();
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_VirtualGoodUNEQUIPPED");
@@ -126,7 +126,7 @@ public class EventListener {
         plugin.soomla.LuaLoader.throwEvent(map);
     }
 
-    @Subscribe public void onUnexpectedErrorInStore(UnexpectedStoreErrorEvent unexpectedStoreErrorEvent) {
+    @Subscribe public void onUnexpectedStoreError(UnexpectedStoreErrorEvent unexpectedStoreErrorEvent) {
         HashMap<String,Object> map = new HashMap<String,Object>();
         map.put("name","soomla_UnexpectedErrorInStore");
         map.put("description",unexpectedStoreErrorEvent.getMessage());

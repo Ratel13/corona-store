@@ -2,6 +2,7 @@ package com.soomla.corona.store;
 
 import com.soomla.BusProvider;
 import com.soomla.Soomla;
+import com.soomla.SoomlaConfig;
 import com.soomla.store.billing.google.*;
 import com.soomla.store.IStoreAssets;
 import com.soomla.store.SoomlaStore;
@@ -44,8 +45,10 @@ public class CoronaSoomlaStore implements IStoreAssets {
         try {
             //Making our EventListener start doing its job!
             BusProvider.getInstance().register(EventListener.getInstance());
+            SoomlaConfig.logDebug = true;
 
             this.version = ((Double)map.get(CoronaSoomlaStore.VERSION)).intValue();
+
 
             Map<String,String> categories = (Map<String,String>)map.get(CoronaSoomlaStore.CATEGORIES);
             this.availableCategories = new ArrayList<String>(categories.values());
@@ -63,15 +66,20 @@ public class CoronaSoomlaStore implements IStoreAssets {
             this.availableNonConsumableItems = new ArrayList<String>(nonConsumableItems.values());
 
             this.customSecret = (String)map.get(CoronaSoomlaStore.CUSTOMSECRET);
-            //this.googlePlayKey = (String)map.get(CoronaSoomlaStore.GOOGLEPLAYKEY);
+            this.googlePlayKey = (String)map.get(CoronaSoomlaStore.GOOGLEPLAYKEY);
 
-            System.out.println("SOOMLA: Initializing the custom secret...");
+
+            System.out.println("SOOMLA: Initializing the custom secret..." + this.customSecret);
             Soomla.initialize(this.customSecret);
             System.out.println("SOOMLA: Initializing the IStoreAssets...");
             SoomlaStore.getInstance().initialize(this);
-            System.out.println("SOOMLA: Initializing the Google Play IAB Service");
-            //GooglePlayIabService.getInstance().setPublicKey(this.googlePlayKey);
-        } catch(Exception e) { throw e; }
+            System.out.println("SOOMLA: Initializing the Google Play IAB Service with key " + this.googlePlayKey);
+            GooglePlayIabService.getInstance().setPublicKey(this.googlePlayKey);
+            
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
     /// Version
@@ -111,6 +119,7 @@ public class CoronaSoomlaStore implements IStoreAssets {
             VirtualCurrency currency = (VirtualCurrency)this.vItems.get(currencyId);
             currencies.add(currency);
         }
+        System.out.println("Currencies: " + currencies.size());
         VirtualCurrency[] currencyArray = new VirtualCurrency[currencies.size()];
         return currencies.toArray(currencyArray);
     }
@@ -121,6 +130,7 @@ public class CoronaSoomlaStore implements IStoreAssets {
             VirtualCurrencyPack currencyPack = (VirtualCurrencyPack)this.vItems.get(currencyPackId);
             currencyPacks.add(currencyPack);
         }
+        System.out.println("Currency Packs: " + currencyPacks.size());
         VirtualCurrencyPack[] currencyPackArray = new VirtualCurrencyPack[currencyPacks.size()];
         return currencyPacks.toArray(currencyPackArray);
     }
@@ -131,6 +141,7 @@ public class CoronaSoomlaStore implements IStoreAssets {
             VirtualCategory category = this.vCategories.get(categoryName);
             categories.add(category);
         }
+        System.out.println("Categories: " + categories.size());
         VirtualCategory[] categoryArray = new VirtualCategory[categories.size()];
         return categories.toArray(categoryArray);
     }
@@ -141,6 +152,7 @@ public class CoronaSoomlaStore implements IStoreAssets {
             VirtualGood virtualGood = (VirtualGood)this.vItems.get(virtualGoodId);
             virtualGoods.add(virtualGood);
         }
+        System.out.println("Virtual Goods: " + virtualGoods.size());
         VirtualGood[] virtualGoodArray = new VirtualGood[virtualGoods.size()];
         return virtualGoods.toArray(virtualGoodArray);
     }
@@ -151,6 +163,7 @@ public class CoronaSoomlaStore implements IStoreAssets {
             NonConsumableItem nonConsumableItem = (NonConsumableItem)this.vItems.get(nonConsumableItemId);
             nonConsumableItems.add(nonConsumableItem);
         }
+        System.out.println("Non Consumable Items: " + nonConsumableItems.size());
         NonConsumableItem[] nonConsumableItemArray = new NonConsumableItem[nonConsumableItems.size()];
         return nonConsumableItems.toArray(nonConsumableItemArray);
     }
